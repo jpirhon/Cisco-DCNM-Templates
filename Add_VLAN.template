@@ -1,0 +1,30 @@
+##template properties
+name=ADD_VLAN;
+description = Add VLAN;
+tags = ;
+userDefined = true;
+supportedPlatforms = N9K,N9K-9000v,N5K,N5600,N5500,N6K,N7K;
+templateType = CLI;
+templateSubType = NA;
+contentType = TEMPLATE_CLI;
+implements = implements;
+dependencies = ;
+published = false;
+##
+##template variables
+@(DisplayName="VLAN ID (2-4096)", Description = "New VLAN ID", PrimaryAssociation=true, IsMandatory=true)
+integer VLAN_ID { min = 2; max = 4096; };
+@(DisplayName="VLAN Name (no spaces)", Description = "VLAN Name", IsMandatory=true)
+string VLAN_NAME{ minLength = 1; maxLength = 128; };
+##
+##template content
+show vlan id $$VLAN_ID$$
+if($$LAST_CMD_RESPONSE$$ contains "not found") {
+    vlan $$VLAN_ID$$
+    name $$VLAN_NAME$$
+    exit
+}
+else {
+    ! VLAN ID already exists on switch
+}
+##

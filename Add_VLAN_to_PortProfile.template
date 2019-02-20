@@ -1,0 +1,28 @@
+##template properties
+name=ADD_VLAN_TO_PORTPROFILE;
+description = Add VLAN to Port Profile;
+tags = ;
+userDefined = true;
+supportedPlatforms = N9K,N9K-9000v,N5K,N5600,N5500,N6K,N7K;
+templateType = CLI;
+templateSubType = NA;
+contentType = TEMPLATE_CLI;
+implements = implements;
+dependencies = ;
+published = false;
+##
+##template variables
+@(DisplayName="VLAN ID (2-4096) or range of VLANs", Description = "VLAN ID", PrimaryAssociation=true, IsMandatory=true)
+integerRange VLAN_ID_RANGE { min = 2; max = 4096; };
+@(DisplayName="Port profile name", Description = "Port profile name", IsMandatory=true)
+string PORTPROFILE_NAME{ minLength = 1; maxLength = 128; };
+@(DisplayName="Port profile type", Description = "Port profile type", IsMandatory=true)
+enum PORTPROFILE_TYPE{ validValues = port-channel,ethernet };
+##
+##template content
+foreach VLAN_ID in $$VLAN_ID_RANGE$$ {
+    port-profile type $$PORTPROFILE_TYPE$$ $$PORTPROFILE_NAME$$
+    switchport trunk allowed vlan add @VLAN_ID
+    exit
+}
+##

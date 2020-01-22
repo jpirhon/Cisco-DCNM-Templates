@@ -1,4 +1,4 @@
-# Cisco DCNM Templates
+# Cisco DCNM Legacy mode templates
 
 **Add_VLAN.template**  
 Add VLAN to switches
